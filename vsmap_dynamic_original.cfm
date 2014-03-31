@@ -3,7 +3,7 @@
 <head>
 	<!--- UPDATE - each page should have a unique title --->
     <title>I&amp;M Vital Signs Example Maps</title>
-	
+
     <!--- LEAVE the following meta and link lines alone    --->
 	<meta name="Description" content="National Park Service, Inventory &amp; Monitoring Program, Data Management" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -17,8 +17,8 @@
 	<script type="text/javascript" src="/im/assets/scripts/JQuery/jquery-1.4.4.min.js"></script> 
 	<!--- OPTIONAL ADD other scripts below this point  --->
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
-	
-	
+
+
         
 <!--- LEAVE the lines below alone until the next "OPTIONAL UPDATE" comment below --->
 </head>
@@ -32,7 +32,7 @@
 			page in the left-hand navigation, change the default "thisPage variable below (#CGI.script_name#) to the actual file name and path from the 
 			server root of the parent page that you want highlighted/expanded in the left-hand navigation (e.g., "/im/datamgmt/index.cfm"). --->
 			<cfset thisPage = #CGI.script_name#>  
-			
+
             <div id="content" class="clearfix" >             
             <div class="hideInPrintView">
             
@@ -53,39 +53,24 @@
 			</div> 
             
             <p><b>Example maps of park and network vital sign protocols.</b></p>
-            <!-- 
             <center>
-            <a id="AirQualityOzone">Air Quality - Ozone</a><br>
-            <a href="vsmap_dynamic.cfm?protocol=AtRiskBiota">At-Risk Biota</a><br>
-            <a href="vsmap_dynamic.cfm?protocol=InvasiveExoticPlants">Invasive or Exotic Plants</a><br>
-            <a href="vsmap_dynamic.cfm?protocol=VisitorUse">Visitor Use</a><br>
-             -->
-        <ul>     
-             <a id="mapLink0" href="#" onclick="updateMap(0);">Air Quality - Ozone</a><br>
-            <a id="mapLink1" href="#" onclick="updateMap(1);">At-Risk Biota</a><br>
-            <a id="mapLink2" href="#" onclick="updateMap(2);">Invasive or Exotic Plants</a><br>
-            <a id="mapLink3" href="#" onclick="updateMap(3);">Visitor Use</a><br>
-        </ul>
-
-      		<!--- <select id="protocolsID" name="protocols" onChange="javascript:updateMap()">
+      		<select id="protocolsID" name="protocols" onChange="javascript:updateMap()">
       			<option> Choose a protocol: </option>
       			<option value="0"> Air Quality - Ozone </option>
       			<option value="1"> At-Risk Biota </option>
       			<option value="2"> Invasive or Exotic Plants </option>
       			<option value="3"> Visitor Use </option>
-      		</select> --->
+      		</select>
+      		<br />
 
-<div id="mapinfo" style="display: none"><b>Click a feature to see protocol details.</b>  Be patient - testing server is slow.</div>
-<br>
-<div id="map" style="width: 750px; height: 500px;"></div>
+<div id="map" style="width: 750px; height: 500px"></div>	
 <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
 <!-- Load Esri Leaflet -->
 <script src="lib/esri-leaflet/esri-leaflet.js"></script>
 <!-- <script src="leaflet-providers.js"></script> -->
 			<!-- <script src="leaflet.js"></script> -->
 			<script>
-			
-				/*
+			/*
 				var protocolServices = {
 					"AirQualityOzone": "http://irmaservices.nps.gov/arcgis/rest/services/Tests/AirQualityOzoneProtocols/MapServer/",
 					 "AtRiskBiota": "http://irmaservices.nps.gov/arcgis/rest/services/Tests/AtRiskBiotaProtocols/MapServer/",
@@ -93,8 +78,6 @@
 					  "VisitorUse": "http://irmaservices.nps.gov/arcgis/rest/services/Tests/VisitorUseProtocols/MapServer/"
 				};
 				*/
-				
-				protocolSelected = 9999;  // dummy variable used to allow dynamic layer switching
 				var protocolServices = {
 					names: ["AirQualityOzone", "AtRiskBiota", "InvasiveExoticPlants", "VisitorUse"],
 					paths: ["http://irmaservices.nps.gov/arcgis/rest/services/Tests/AirQualityOzoneProtocols/MapServer/", "http://irmaservices.nps.gov/arcgis/rest/services/Tests/AtRiskBiotaProtocols/MapServer/", "http://irmaservices.nps.gov/arcgis/rest/services/Tests/InvasiveOrExoticPlantsProtocols/MapServer/", "http://irmaservices.nps.gov/arcgis/rest/services/Tests/VisitorUseProtocols/MapServer/"]
@@ -103,96 +86,42 @@
 				var map = L.map('map').setView([40.3, -105.5], 2);
 				//Add Oceans Basemaps
 				var defaultLayer = L.esri.basemapLayer("Oceans").addTo(map);
-				
-				// Set up protocol layers for toggling
-				// TODO: make this a hashtable
-				/*
-				ozoneLayer = L.esri.dynamicMapLayer(
-					protocolServices.paths[0],
-					 {
-						opacity : 1,
-						layers: [0]
-					});
-			    biotaLayer = L.esri.dynamicMapLayer(
-					protocolServices.paths[1],
-					 {
-						opacity : 1,
-						layers: [0]
-					});
-				invasivesLayer = L.esri.dynamicMapLayer(
-					protocolServices.paths[2],
-					 {
-						opacity : 1,
-						layers: [0]
-					});
-				visitorLayer = L.esri.dynamicMapLayer(
-					protocolServices.paths[3],
-					 {
-						opacity : 1,
-						layers: [0]
-					});
-				*/
+				//dynLayer = L.esri.dynamicMapLayer();
 
-				/*function getProtocol() {
-					var protocolLink = $("AirQualityOzone").click( function() {
-						$("mapinfo").innerHTML = "AirQualityOzone";
-						$("mapinfo").style.display = 'block'; 
-						return false; } );	
-				}
-				*/
-
-				function updateMap(protocolName) {
+				function updateMap() {
 					map.setView([40.3, -105.5], 2);
-					// remove existing layer, if visible (Note: cannot toggle layers with Leaflet, hence this kludge)
-					if (protocolSelected < 9999) {map.removeLayer(dynLayer);}
-					//alert(protocolServices.paths[protocolName]);
-					//ArcGIS Server Dynamic Map Service, Vital Signs Protocols
-					dynLayer = L.esri.dynamicMapLayer(
-						protocolServices.paths[protocolName],
-						 {
-							opacity : 1,
-							layers: [0]
-						});
-
-					protocolSelected = protocolName;
-
-					/*map.removeLayer(ozoneLayer);
-					map.removeLayer(biotaLayer);
-					map.removeLayer(invasivesLayer);
-					map.removeLayer(visitorLayer);
-
-					if (protocolName == 0) {map.addLayer(ozoneLayer);}
-					else if (protocolName == 1) {map.addLayer(biotaLayer);}
-					else if (protocolName == 2) {map.addLayer(invasivesLayer);}
-					else {map.addLayer(visitorLayer);}
-					*/
-
 					//map.removeLayer(dynLayer);
-					//var x = $("#protocolsID").val();
-					//alert(protocolName);
-					//var servicePath = protocolServices.paths[protocolName];
+					var x = $("#protocolsID").val();
+					//alert(x);
+					var servicePath = protocolServices.paths[x];
 					//alert(servicePath);
 
 					//ArcGIS Server Dynamic Map Service, Vital Signs Protocols
-					/*
 					dynLayer = L.esri.dynamicMapLayer(
 						servicePath,
 						 {
 							opacity : 1,
 							layers: [0]
 						});
-					*/
 					//.addTo(map);
 					//map.removeLayer(dynLayer);
-					//divToUpdate.setAttribute('class','block');
-					//var divToUpdate = $("mapinfo");
-					var divToUpdate = document.getElementById('mapinfo');
-					divToUpdate.style.display = 'block'; 
-					map.addLayer(dynLayer);			
+					map.addLayer(dynLayer);
 				}
-				
-				//Identifying Dynamic Map Service Features. Note: cannot toggle identify so use same dynamic layer over and over
-        		map.on("click", function(e) {
+
+				//var defaultLayer = L.tileLayer.provider('OpenStreetMap.Mapnik').addTo(map);
+
+				//ArcGIS Server Dynamic Map Service, Historic Hurricane Tracks
+				/*dynLayer = L.esri.dynamicMapLayer(protocolServices.paths[2], {
+				opacity : 1,
+				layers: [0]
+				});
+
+				map.addLayer(dynLayer);
+				*/
+
+				//Identifying Dynamic Map Service Features
+
+      			map.on("click", function(e) {
         			dynLayer.identify(e.latlng, function(data) {
          				 if(data.results.length > 0) {
            				 	//Popup text should be in html format.  Showing the Storm Name with the type
@@ -206,12 +135,11 @@
               			};
               		});
         		});
-				
               
 			</script>            
 
-			
-			
+			<div id="map" style="width: 700px; height: 500px"></div>
+
         
 			<p class="top"><a href="#top">&uArr; To Top of Page</a></p>
                  
