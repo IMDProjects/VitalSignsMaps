@@ -77,7 +77,7 @@
 
 <div id="mapinfo" style="display: none"><b>Click a feature to see protocol details.</b>  Be patient - testing server is slow.</div>
 <br>
-<div id="map" style="width: 750px; height: 500px;"></div>
+<div id="map" style="width: 750px; height: 500px; cursor: crosshair;"></div>
 <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
 <!-- Load Esri Leaflet -->
 <script src="lib/esri-leaflet/esri-leaflet.js"></script>
@@ -207,7 +207,6 @@
               		});
         		});
 				
-              
 			</script>            
 
 			
