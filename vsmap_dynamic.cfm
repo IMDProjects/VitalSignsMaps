@@ -63,8 +63,9 @@
         <ul>     
              <a id="mapLink0" href="#" onclick="updateMap(0);">Air Quality - Ozone</a><br>
             <a id="mapLink1" href="#" onclick="updateMap(1);">At-Risk Biota</a><br>
-            <a id="mapLink2" href="#" onclick="updateMap(2);">Invasive or Exotic Plants</a><br>
-            <a id="mapLink3" href="#" onclick="updateMap(3);">Visitor Use</a><br>
+             <a id="mapLink2" href="#" onclick="updateMap(2);">Birds</a><br>
+            <a id="mapLink2" href="#" onclick="updateMap(3);">Invasive or Exotic Plants</a><br>
+            <a id="mapLink3" href="#" onclick="updateMap(4);">Visitor Use</a><br>
         </ul>
 
       		<!--- <select id="protocolsID" name="protocols" onChange="javascript:updateMap()">
@@ -96,8 +97,8 @@
 				
 				protocolSelected = 9999;  // dummy variable used to allow dynamic layer switching
 				var protocolServices = {
-					names: ["AirQualityOzone", "AtRiskBiota", "InvasiveExoticPlants", "VisitorUse"],
-					paths: ["http://irmaservices.nps.gov/arcgis/rest/services/Tests/AirQualityOzoneProtocols/MapServer/", "http://irmaservices.nps.gov/arcgis/rest/services/Tests/AtRiskBiotaProtocols/MapServer/", "http://irmaservices.nps.gov/arcgis/rest/services/Tests/InvasiveOrExoticPlantsProtocols/MapServer/", "http://irmaservices.nps.gov/arcgis/rest/services/Tests/VisitorUseProtocols/MapServer/"]
+					names: ["AirQualityOzone", "AtRiskBiota", "Birds", "InvasiveExoticPlants", "VisitorUse"],
+					paths: ["http://irmaservices.nps.gov/arcgis/rest/services/Tests/AirQualityOzoneProtocols/MapServer/", "http://irmaservices.nps.gov/arcgis/rest/services/Tests/AtRiskBiotaProtocols/MapServer/", "http://irmaservices.nps.gov/arcgis/rest/services/Tests/BirdsProtocols/MapServer", "http://irmaservices.nps.gov/arcgis/rest/services/Tests/InvasiveOrExoticPlantsProtocols/MapServer/", "http://irmaservices.nps.gov/arcgis/rest/services/Tests/VisitorUseProtocols/MapServer/"]
 				}; 
 
 				var map = L.map('map').setView([40.3, -105.5], 2);
